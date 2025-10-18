@@ -1,0 +1,12 @@
+.weatherstyle{
+    justify-self: center;
+     text-align: center;
+}
+.textweather{
+    justify-self: center;
+    text-align: center;
+    /* width: 350px; */
+}
+.boxHide{
+    display: none;
+}
