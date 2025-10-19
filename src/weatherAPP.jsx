@@ -7,13 +7,13 @@ export default function weatherAPP(){
 
     let [weatherdata, setWeatherdata] = useState({
         city: "Delhi", 
-        temp: 32.27,
-        humidity: 64,
-        pressure: 995,
-        feels_like: 39.03,
-        temp_max: 32.27,
-        temp_min: 32.27,
-        description: "broken clouds"
+        temp: "N/A",
+        humidity: "N/A",
+        pressure: "N/A",
+        feels_like: "N/A",
+        temp_max: "N/A",
+        temp_min: "N/A",
+        description: "N/A" 
     });
 
     let updateinfo = (result) => {

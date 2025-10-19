@@ -1,41 +1,54 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import './SeachBoxfile1.css';
 
 
 export default function SearchBoxfunc({updateinfo}){
 
-    let [city, setCity] = useState("");
+    let [city, setCity] = useState("Delhi");
 
-    let API_URL = "https://api.openweathermap.org/data/2.5/weather";
+    let API_URL =  import.meta.env.VITE_API_URL;
     // q={city name}&appid={API key} from last of code of API_URL , above url can convert city name to Latitude and Longitude
     
     
     // let API_URL = "http://api.openweathermap.org/geo/1.0/direct";
     // ?q={city name},{state code},{country code}&limit={limit}&appid={API key}
 
-    const API_KEY = "a227c9f797e912734a60b682b15892e0";
+    const API_KEY = import.meta.env.VITE_API_KEY;
+
 
     // above api_key is my personal key from https://home.openweathermap.org/api_keys
+    // 227c9f797e912734a60b682b15892e0
 
     let getWeatherInfo = async () => {
-        let response = await fetch (`${API_URL}?q=${city}&appid=${API_KEY}&units=metric`);
-        let responseJson = await response.json();
-        console.log("call");
-       
-        return {
+        try {
+          const response = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}&units=metric`);
+          const data = await response.json();
+
+          return {
             city: city,
-            temp: responseJson?.main?.temp ?? "N/A",
-            humidity: responseJson?.main?.humidity ?? "N/A",
-            pressure: responseJson?.main?.pressure ?? "N/A",
-            feels_like: responseJson?.main?.feels_like ?? "N/A",
-            temp_max: responseJson?.main?.temp_max ?? "N/A",
-            temp_min: responseJson?.main?.temp_min ?? "N/A",
-            description: responseJson?.weather?.[0]?.description ?? "N/A"
-        };
-        // console.log(result);
-        // return result;
+            temp: data?.main?.temp ?? 'N/A',
+            humidity: data?.main?.humidity ?? 'N/A',
+            pressure: data?.main?.pressure ?? 'N/A',
+            feels_like: data?.main?.feels_like ?? 'N/A',
+            temp_max: data?.main?.temp_max ?? 'N/A',
+            temp_min: data?.main?.temp_min ?? 'N/A',
+            description: data?.weather?.[0]?.description ?? 'N/A'
+          };
+        } catch (error) {
+          console.error("Error fetching weather:", error);
+          return {
+            city: city,
+            temp: 'N/A',
+            humidity: 'N/A',
+            pressure: 'N/A',
+            feels_like: 'N/A',
+            temp_max: 'N/A',
+            temp_min: 'N/A',
+            description: 'Error fetching weather'
+          };
+        }
     }
     
 
@@ -49,15 +62,23 @@ export default function SearchBoxfunc({updateinfo}){
 
         let newResult = await getWeatherInfo();
         updateinfo(newResult);
-        setCity(city);
+        setCity("");
     }
+
+    useEffect(() => {
+        const fetchDefaultWeather = async () => {
+            const newResult = await getWeatherInfo();
+            updateinfo(newResult);
+        };
+
+        fetchDefaultWeather();
+    }, []); 
 
     return (
         <div className='weatherstyle'>
             <h1>Search For The Weather</h1>
 
             <form onSubmit={handleSubmit} className='textweather'>
-
                 <TextField id="outlined-basic"
                  label="City Name"
                  variant="outlined" 
