@@ -10,8 +10,7 @@ A simple weather application built with React.js and Material UI that fetches an
 - Handles API errors gracefully
 
 ## Demo
-
-*Add a link or screenshot here if you have one*
+https://react-weather-app-using-api.netlify.app/
 
 ## Installation
 
