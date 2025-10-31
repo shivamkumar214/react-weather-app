@@ -21,13 +21,43 @@ export default function SearchBoxfunc({updateinfo}){
     // above api_key is my personal key from https://home.openweathermap.org/api_keys
     // 227c9f797e912734a60b682b15892e0
 
-    let getWeatherInfo = async () => {
-        try {
-          const response = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}&units=metric`);
-          const data = await response.json();
+    // let getWeatherInfo = async () => {
+    //     try {
+    //       const response = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}&units=metric`);
+    //       const data = await response.json();
 
-          return {
-            city: city,
+    //       return {
+    //         city: city,
+    //         temp: data?.main?.temp ?? 'N/A',
+    //         humidity: data?.main?.humidity ?? 'N/A',
+    //         pressure: data?.main?.pressure ?? 'N/A',
+    //         feels_like: data?.main?.feels_like ?? 'N/A',
+    //         temp_max: data?.main?.temp_max ?? 'N/A',
+    //         temp_min: data?.main?.temp_min ?? 'N/A',
+    //         description: data?.weather?.[0]?.description ?? 'N/A'
+    //       };
+    //     } catch (error) {
+    //       console.error("Error fetching weather:", error);
+    //       return {
+    //         city: city,
+    //         temp: 'N/A',
+    //         humidity: 'N/A',
+    //         pressure: 'N/A',
+    //         feels_like: 'N/A',
+    //         temp_max: 'N/A',
+    //         temp_min: 'N/A',
+    //         description: 'Error fetching weather'
+    //       };
+    //     }
+    // }
+
+    let getWeatherInfo = async (cityName = city) => {
+    try {
+        const response = await fetch(`${API_URL}?q=${cityName}&appid=${API_KEY}&units=metric`);
+        const data = await response.json();
+
+        return {
+            city: cityName,
             temp: data?.main?.temp ?? 'N/A',
             humidity: data?.main?.humidity ?? 'N/A',
             pressure: data?.main?.pressure ?? 'N/A',
@@ -35,11 +65,11 @@ export default function SearchBoxfunc({updateinfo}){
             temp_max: data?.main?.temp_max ?? 'N/A',
             temp_min: data?.main?.temp_min ?? 'N/A',
             description: data?.weather?.[0]?.description ?? 'N/A'
-          };
-        } catch (error) {
-          console.error("Error fetching weather:", error);
-          return {
-            city: city,
+        };
+    } catch (error) {
+        console.error("Error fetching weather:", error);
+        return {
+            city: cityName,
             temp: 'N/A',
             humidity: 'N/A',
             pressure: 'N/A',
@@ -47,23 +77,33 @@ export default function SearchBoxfunc({updateinfo}){
             temp_max: 'N/A',
             temp_min: 'N/A',
             description: 'Error fetching weather'
-          };
-        }
+        };
     }
+};
     
 
     let handleChange = (event) => {
         setCity(event.target.value);
     }
-    let handleSubmit = async (event) => {
-        event.preventDefault();
-        // setCity("");
-        console.log(city);
+    // let handleSubmit = async (event) => {
+    //     event.preventDefault();
+    //     // setCity("");
+    //     console.log(city);
 
-        let newResult = await getWeatherInfo();
-        updateinfo(newResult);
-        setCity("");
-    }
+    //     let newResult = await getWeatherInfo();
+    //     updateinfo(newResult);
+    //     setCity("");
+    // }
+
+    let handleSubmit = async (event) => {
+    event.preventDefault();
+    const trimmedCity = city.trim();
+    console.log(trimmedCity);
+
+    let newResult = await getWeatherInfo(trimmedCity);
+    updateinfo(newResult);
+    setCity("");
+};
 
     useEffect(() => {
         const fetchDefaultWeather = async () => {
