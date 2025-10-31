@@ -16,13 +16,18 @@ export default function weatherAPP(){
         description: "N/A" 
     });
 
-    let updateinfo = (result) => {
-        setWeatherdata(result);
-    }
+    // let updateinfo = (result) => {
+    //     setWeatherdata(result);
+    // }
 
     return (
         <div>
-            <SearchBoxfunc updateinfo={updateinfo}/>
+            <SearchBoxfunc 
+                updateinfo={
+                    (result) => {
+                        setWeatherdata(result);
+                }}  
+            />
             <InfoBox info={weatherdata}/>
         </div>
     );

@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 
 
 export default function SearchBoxfunc({updateinfo}){
-
     let [city, setCity] = useState("Delhi");
 
     let API_URL =  import.meta.env.VITE_API_URL;
@@ -54,7 +53,9 @@ export default function SearchBoxfunc({updateinfo}){
     let getWeatherInfo = async (cityName = city) => {
     try {
         const response = await fetch(`${API_URL}?q=${cityName}&appid=${API_KEY}&units=metric`);
+        // {console.log(response)}
         const data = await response.json();
+        // {console.log(data)}
 
         return {
             city: cityName,
@@ -96,14 +97,14 @@ export default function SearchBoxfunc({updateinfo}){
     // }
 
     let handleSubmit = async (event) => {
-    event.preventDefault();
-    const trimmedCity = city.trim();
-    console.log(trimmedCity);
+        event.preventDefault();
+        const trimmedCity = city.trim();
+        console.log(trimmedCity);
 
-    let newResult = await getWeatherInfo(trimmedCity);
-    updateinfo(newResult);
-    setCity("");
-};
+        let newResult = await getWeatherInfo(trimmedCity);
+        updateinfo(newResult);
+        setCity("");
+    };
 
     useEffect(() => {
         const fetchDefaultWeather = async () => {
